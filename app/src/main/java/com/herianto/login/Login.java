@@ -1,4 +1,4 @@
-package com.herianto.login;
+    package com.herianto.login;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,7 +31,8 @@ public class Login extends AppCompatActivity {
     EditText txt_username, txt_password;
     Intent intent;
 
-    int success;
+    public int success;
+
     ConnectivityManager conMgr;
 
     private String url = Server.URL + "login.php";
@@ -42,14 +43,15 @@ public class Login extends AppCompatActivity {
     private static final String TAG_MESSAGE = "message";
 
     public final static String TAG_USERNAME = "username";
-    public final static String TAG_ID = "id";
+    public final static String TAG_PEMAKAI = "idpemakai";
     public final static String TAG_FULLNAME = "message";
+    public final static String TAG_JABATAN = "jabatan";
 
     String tag_json_obj = "json_obj_req";
 
     SharedPreferences sharedpreferences;
     Boolean session = false;
-    String id, username, pesan ;
+    String idpemakai, username, pesan, jabatan ;
     public static final String my_shared_preferences = "my_shared_preferences";
     public static final String session_status = "session_status";
 
@@ -77,18 +79,19 @@ public class Login extends AppCompatActivity {
         // Cek session login jika TRUE maka langsung buka MainActivity
         sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
         session = sharedpreferences.getBoolean(session_status, false);
-        id = sharedpreferences.getString(TAG_ID, null);
+        idpemakai = sharedpreferences.getString(TAG_PEMAKAI, null);
         username = sharedpreferences.getString(TAG_USERNAME, null);
         pesan = sharedpreferences.getString(TAG_FULLNAME, null);
+        jabatan = sharedpreferences.getString(TAG_JABATAN, null);
 
-        if (session) {
-            Intent intent = new Intent(Login.this, MainActivity.class);
+       if (session) {
+           Intent intent = new Intent(Login.this, MainActivity.class);
 //            pDialog.hide();
-            intent.putExtra(TAG_ID, id);
-            intent.putExtra(TAG_USERNAME, username);
-            intent.putExtra(TAG_FULLNAME, pesan);
-            finish();
-            startActivity(intent);
+           intent.putExtra(TAG_USERNAME, username);
+           intent.putExtra(TAG_FULLNAME, pesan);
+           intent.putExtra(session_status,session);
+           finish();
+           startActivity(intent);
         }
 
 
@@ -116,17 +119,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        btn_register.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                intent = new Intent(Login.this, Register.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void checkLogin(final String username, final String password) {
@@ -149,7 +141,7 @@ public class Login extends AppCompatActivity {
                     // Check for error node in json
                     if (success == 1) {
                         String username = jObj.getString(TAG_USERNAME);
-                        String id = jObj.getString(TAG_ID);
+                        String idpemakai = jObj.getString(TAG_PEMAKAI);
                         String pesan = jObj.getString(TAG_FULLNAME);
 
                         Log.e("Successfully Login!", jObj.toString());
@@ -157,18 +149,21 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
 
                         // menyimpan login ke session
+
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putBoolean(session_status, true);
-                        editor.putString(TAG_ID, id);
+                        editor.putString(TAG_PEMAKAI, idpemakai);
                         editor.putString(TAG_USERNAME, username);
                         editor.putString(TAG_FULLNAME, pesan);
+                        editor.putString(TAG_JABATAN, jabatan);
                         editor.apply();
 
                         // Memanggil main activity
                         Intent intent = new Intent(Login.this, MainActivity.class);
-                        intent.putExtra(TAG_ID, id);
+                        intent.putExtra(TAG_PEMAKAI, idpemakai);
                         intent.putExtra(TAG_USERNAME, username);
                         intent.putExtra(TAG_FULLNAME, pesan);
+                        intent.putExtra(TAG_JABATAN, jabatan);
                         finish();
                         startActivity(intent);
                     } else {
@@ -220,4 +215,5 @@ public class Login extends AppCompatActivity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
 }
