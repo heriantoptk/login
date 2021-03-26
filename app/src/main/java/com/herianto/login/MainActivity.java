@@ -2,7 +2,6 @@ package com.herianto.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,23 +15,21 @@ import com.herianto.login.detail.Perdata;
 import com.herianto.login.detail.Pidana;
 import com.herianto.login.detail.Umum;
 
-import static com.herianto.login.Login.my_shared_preferences;
-import static com.herianto.login.Login.session_status;
-
 public class MainActivity extends AppCompatActivity {
 
     ImageButton btn_logout, btn_perdata, btn_pidana, btn_umum;
     TextView txt_id, txt_username;
-    String idpemakai, username, pesan, sukses;
+    String idpemakai, username, fullname, jabatan;
 
     SharedPreferences sharedpreferences;
 
-    public static final String TAG_PEMAKAI = "idpemakai";
-    public static final String TAG_USERNAME = "username";
-    public static final String TAG_FULLNAME = "message";
+    public final static String TAG_USERNAME = "username";
+    public final static String TAG_PEMAKAI = "idpemakai";
+    public final static String TAG_FULLNAME = "fullname";
+    public final static String TAG_JABATAN = "jabatan";
+
     //public static final String session_status = "session_status";
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +42,22 @@ public class MainActivity extends AppCompatActivity {
         btn_pidana = (ImageButton) findViewById(R.id.btn_pidana);
         btn_umum = (ImageButton) findViewById(R.id.btn_umum);
 
-        sharedpreferences = getSharedPreferences(my_shared_preferences, Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences(Login.my_shared_preferences , Context.MODE_PRIVATE);
         idpemakai = getIntent().getStringExtra(TAG_PEMAKAI);
         username = getIntent().getStringExtra(TAG_USERNAME);
-        pesan = getIntent().getStringExtra(TAG_FULLNAME);
-        sukses = getIntent().getStringExtra(session_status);
+        fullname = getIntent().getStringExtra(TAG_FULLNAME);
+        jabatan = getIntent().getStringExtra(TAG_JABATAN);
+
         if ( username != null ) {
-            txt_id.setText("USERNAME : " + sukses);
-            txt_username.setText("" + pesan);
+            txt_id.setText("USERNAME : " + username);
+            txt_username.setText("" + fullname);
+        }else{
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.clear();
+            editor.apply();
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            finish();
+            startActivity(intent);
         }
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
 
                 Intent intent = new Intent(MainActivity.this, Login.class);
-                finish();
                 startActivity(intent);
             }
         });
@@ -74,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
         btn_perdata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Perdata.class);
-                finish();
+                Intent intent = new Intent(MainActivity.this, Perdata.class);
+                intent.putExtra(TAG_PEMAKAI, idpemakai);
+                intent.putExtra(TAG_USERNAME, username);
+                intent.putExtra(TAG_FULLNAME, fullname);
+                intent.putExtra(TAG_JABATAN, jabatan);
                 startActivity(intent);
             }
         });
@@ -84,7 +91,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Pidana.class);
-                finish();
+                intent.putExtra(TAG_PEMAKAI, idpemakai);
+                intent.putExtra(TAG_USERNAME, username);
+                intent.putExtra(TAG_FULLNAME, fullname);
+                intent.putExtra(TAG_JABATAN, jabatan);
                 startActivity(intent);
             }
         });
@@ -93,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Umum.class);
-                finish();
+                intent.putExtra(TAG_PEMAKAI, idpemakai);
+                intent.putExtra(TAG_USERNAME, username);
+                intent.putExtra(TAG_FULLNAME, fullname);
+                intent.putExtra(TAG_JABATAN, jabatan);
                 startActivity(intent);
             }
         });

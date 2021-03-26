@@ -27,31 +27,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
     ProgressDialog pDialog;
-    Button btn_register, btn_login;
+    Button btn_login;
     EditText txt_username, txt_password;
     Intent intent;
 
-    public int success;
-
+    int success;
     ConnectivityManager conMgr;
 
     private String url = Server.URL + "login.php";
-
     private static final String TAG = Login.class.getSimpleName();
 
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
+    private final static String TAG_SUCCESS = "success";
+    private final static String TAG_MESSAGE = "message";
 
     public final static String TAG_USERNAME = "username";
     public final static String TAG_PEMAKAI = "idpemakai";
-    public final static String TAG_FULLNAME = "message";
+    public final static String TAG_FULLNAME = "fullname";
     public final static String TAG_JABATAN = "jabatan";
 
     String tag_json_obj = "json_obj_req";
 
     SharedPreferences sharedpreferences;
     Boolean session = false;
-    String idpemakai, username, pesan, jabatan ;
+    String idpemakai, username, fullname, jabatan, message ;
     public static final String my_shared_preferences = "my_shared_preferences";
     public static final String session_status = "session_status";
 
@@ -72,7 +70,6 @@ public class Login extends AppCompatActivity {
         }
 
         btn_login = (Button) findViewById(R.id.btn_login);
-        btn_register = (Button) findViewById(R.id.btn_register);
         txt_username = (EditText) findViewById(R.id.txt_username);
         txt_password = (EditText) findViewById(R.id.txt_password);
 
@@ -81,15 +78,18 @@ public class Login extends AppCompatActivity {
         session = sharedpreferences.getBoolean(session_status, false);
         idpemakai = sharedpreferences.getString(TAG_PEMAKAI, null);
         username = sharedpreferences.getString(TAG_USERNAME, null);
-        pesan = sharedpreferences.getString(TAG_FULLNAME, null);
+        fullname = sharedpreferences.getString(TAG_FULLNAME, null);
         jabatan = sharedpreferences.getString(TAG_JABATAN, null);
 
        if (session) {
            Intent intent = new Intent(Login.this, MainActivity.class);
 //            pDialog.hide();
+           intent.putExtra(TAG_MESSAGE, message);
+           intent.putExtra(TAG_SUCCESS, success);
+           intent.putExtra(TAG_PEMAKAI, idpemakai);
            intent.putExtra(TAG_USERNAME, username);
-           intent.putExtra(TAG_FULLNAME, pesan);
-           intent.putExtra(session_status,session);
+           intent.putExtra(TAG_FULLNAME, fullname);
+           intent.putExtra(TAG_JABATAN, jabatan);
            finish();
            startActivity(intent);
         }
@@ -142,7 +142,8 @@ public class Login extends AppCompatActivity {
                     if (success == 1) {
                         String username = jObj.getString(TAG_USERNAME);
                         String idpemakai = jObj.getString(TAG_PEMAKAI);
-                        String pesan = jObj.getString(TAG_FULLNAME);
+                        String fullname = jObj.getString(TAG_FULLNAME);
+                        Integer jabatan = jObj.getInt(TAG_JABATAN);
 
                         Log.e("Successfully Login!", jObj.toString());
 
@@ -154,15 +155,15 @@ public class Login extends AppCompatActivity {
                         editor.putBoolean(session_status, true);
                         editor.putString(TAG_PEMAKAI, idpemakai);
                         editor.putString(TAG_USERNAME, username);
-                        editor.putString(TAG_FULLNAME, pesan);
-                        editor.putString(TAG_JABATAN, jabatan);
+                        editor.putString(TAG_FULLNAME, fullname);
+                        editor.putInt(TAG_JABATAN, jabatan);
                         editor.apply();
 
                         // Memanggil main activity
                         Intent intent = new Intent(Login.this, MainActivity.class);
                         intent.putExtra(TAG_PEMAKAI, idpemakai);
                         intent.putExtra(TAG_USERNAME, username);
-                        intent.putExtra(TAG_FULLNAME, pesan);
+                        intent.putExtra(TAG_FULLNAME, fullname);
                         intent.putExtra(TAG_JABATAN, jabatan);
                         finish();
                         startActivity(intent);
