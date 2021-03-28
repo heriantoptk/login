@@ -13,13 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
+        <activity android:name=".detail.UbahPassword"/>
+        <activity android:name=".operator.UbahPassUser" />
+        <activity android:name=".operator.Reguser" />
         <activity android:name=".detail.Umum" />
-
         <activity android:name=".detail.Perdata" />
         <activity android:name=".detail.Pidana" />
         <activity android:name=".SplashScreen">
@@ -29,15 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".Admin" />
         <activity android:name=".Login" />
-
-
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
