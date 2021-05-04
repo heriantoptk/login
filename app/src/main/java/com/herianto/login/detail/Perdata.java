@@ -22,13 +22,14 @@ public class Perdata extends AppCompatActivity {
     WebSettings webSettings;
     ImageButton btn_back_perdata;
 
-    String idpemakai, username, fullname, jabatan;
+    String idpemakai, username, fullname, jabatan, pesan;
 
     SharedPreferences sharedpreferences;
     public final static String TAG_USERNAME = "username";
     public final static String TAG_PEMAKAI = "idpemakai";
     public final static String TAG_FULLNAME = "fullname";
     public final static String TAG_JABATAN = "jabatan";
+    public final static String TAG_PESAN = "pesan";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class Perdata extends AppCompatActivity {
         webSettings = webView.getSettings();
 
         webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.loadUrl("https://ecourt.mahkamahagung.go.id/");
 
         sharedpreferences = getSharedPreferences(Login.my_shared_preferences , Context.MODE_PRIVATE);
@@ -46,6 +49,7 @@ public class Perdata extends AppCompatActivity {
         username = getIntent().getStringExtra(TAG_USERNAME);
         fullname = getIntent().getStringExtra(TAG_FULLNAME);
         jabatan = getIntent().getStringExtra(TAG_JABATAN);
+        pesan = getIntent().getStringExtra(TAG_PESAN);
 
         btn_back_perdata = (ImageButton) findViewById(R.id.btn_back_perdata);
 
@@ -57,6 +61,7 @@ public class Perdata extends AppCompatActivity {
                 intent.putExtra(TAG_USERNAME, username);
                 intent.putExtra(TAG_FULLNAME, fullname);
                 intent.putExtra(TAG_JABATAN, jabatan);
+                intent.putExtra(TAG_PESAN, pesan);
                 finish();
                 startActivity(intent);
             }

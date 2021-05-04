@@ -1,7 +1,5 @@
 package com.herianto.login.operator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -20,10 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.herianto.login.AppController;
-import com.herianto.login.R;
 import com.herianto.login.Admin;
+import com.herianto.login.AppController;
 import com.herianto.login.Login;
+import com.herianto.login.R;
 import com.herianto.login.Server;
 
 import org.json.JSONException;
@@ -31,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Reguser extends AppCompatActivity {
 
@@ -41,11 +42,10 @@ public class Reguser extends AppCompatActivity {
     ImageButton btn_back_reguser;
     EditText txt_email_reguser, txt_password_reguser, txt_fullname_reguser, txt_passwordx_reguser;
     RadioButton rButton_admin, rButton_hakim;
+
     Intent intent;
     int success;
     ConnectivityManager conMgr;
-
-
     private String url = Server.URL + "register.php";
     private static final String TAG = Reguser.class.getSimpleName();
     private static final String TAG_SUCCESS = "success";
@@ -59,6 +59,7 @@ public class Reguser extends AppCompatActivity {
     public final static String TAG_JABATAN = "jabatan";
 
     String tag_json_obj = "json_obj_req";
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +223,11 @@ public class Reguser extends AppCompatActivity {
             case R.id.radioButton_hakim:
                 if (checked)
                     pangkat = "1";
+                    break;
+
+            case R.id.radioButton_panitera:
+                if (checked)
+                    pangkat = "2";
                     break;
         }
     }

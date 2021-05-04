@@ -1,7 +1,5 @@
 package com.herianto.login.detail;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +31,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class UbahPassword extends AppCompatActivity {
 
     ProgressDialog pDialog;
@@ -40,7 +40,7 @@ public class UbahPassword extends AppCompatActivity {
     TextView txt_id, txt_username, txt_fullname;
     Button btn_submit_ubah_pass_main;
     ImageButton btn_back_ubah_pass_main;
-    String idpemakai, username, fullname, jabatan, idregister;
+    String idpemakai, username, fullname, jabatan, idregister, pesan;
     SharedPreferences sharedpreferences;
     int success;
     ConnectivityManager conMgr;
@@ -54,6 +54,7 @@ public class UbahPassword extends AppCompatActivity {
     public final static String TAG_PEMAKAI = "idpemakai";
     public final static String TAG_FULLNAME = "fullname";
     public final static String TAG_JABATAN = "jabatan";
+    public final static String TAG_PESAN = "pesan";
 
     String tag_json_obj = "json_obj_req";
 
@@ -83,6 +84,7 @@ public class UbahPassword extends AppCompatActivity {
         username = getIntent().getStringExtra(TAG_USERNAME);
         fullname = getIntent().getStringExtra(TAG_FULLNAME);
         jabatan = getIntent().getStringExtra(TAG_JABATAN);
+        pesan = getIntent().getStringExtra(TAG_PESAN);
 
         idregister = idpemakai;
         txt_password_ubah_pass_main = (EditText) findViewById(R.id.edt_password_ubah_pass_main);
@@ -102,6 +104,7 @@ public class UbahPassword extends AppCompatActivity {
                 intent.putExtra(TAG_USERNAME, username);
                 intent.putExtra(TAG_FULLNAME, fullname);
                 intent.putExtra(TAG_JABATAN, jabatan);
+                intent.putExtra(TAG_PESAN, pesan);
                 finish();
                 startActivity(intent);
             }

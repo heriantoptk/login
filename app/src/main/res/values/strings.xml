@@ -17,4 +17,9 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_lihat_user">LihatUser</string>
+    <string name="pid">PID</string>
+    <string name="full_name">Full Name</string>
+    <string name="user_name">User Name</string>
+    <string name="jabatan">Jabatan</string>
 </resources>
